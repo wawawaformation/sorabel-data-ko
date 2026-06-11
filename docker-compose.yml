@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: sorabel
+      POSTGRES_PASSWORD: sorabel
+      POSTGRES_DB: sorabel
+    ports:
+      - "5432:5432"
+    volumes:
+      - sorabel_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sorabel -d sorabel"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  source_one:
+    build: ./mock_sources
+    command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8011"]
+    environment:
+      SOURCE_NAME: source_one
+    ports:
+      - "8011:8011"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8011/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  source_two:
+    build: ./mock_sources
+    command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8012"]
+    environment:
+      SOURCE_NAME: source_two
+    ports:
+      - "8012:8012"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8012/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  sorabel_db_data:

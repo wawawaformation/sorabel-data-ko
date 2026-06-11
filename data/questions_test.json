@@ -1,0 +1,22 @@
+[
+  {
+    "question": "Combien de commandes ont été passées ?",
+    "sql": "SELECT COUNT(*) FROM commandes",
+    "expected": 4
+  },
+  {
+    "question": "Quel est le chiffre d'affaires total ?",
+    "sql": "SELECT SUM(montant) FROM commandes",
+    "expected": 425.0
+  },
+  {
+    "question": "Combien de clients actifs ?",
+    "sql": "SELECT COUNT(*) FROM clients WHERE actif",
+    "expected": 2
+  },
+  {
+    "question": "Combien de villes distinctes comptent des clients ?",
+    "sql": "SELECT COUNT(DISTINCT ville) FROM clients",
+    "expected": 2
+  }
+]
