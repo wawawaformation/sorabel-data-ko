@@ -19,6 +19,11 @@ from sql.generator import generate_sql
 
 @tool
 def run_sql_query(question: str) -> str:
+    """Répond à une question chiffrée sur les données Sorabel via Text-to-SQL.
+
+    Traduit la question en requête SQL, l'exécute sur la base de démonstration
+    et renvoie les lignes obtenues.
+    """
     engine = engine_from_env("DB_URL")
     sql = generate_sql(question)
     rows = run_query(sql, engine)

@@ -7,7 +7,11 @@ from __future__ import annotations
 
 from datetime import date
 
+from dotenv import load_dotenv
+
 from db import clients, commandes, engine_from_env, lignes_commande, metadata, produits
+
+load_dotenv()
 
 CLIENTS = [
     {"id": 1, "raison_sociale": "Acme SAS", "ville": "Lyon", "actif": True},

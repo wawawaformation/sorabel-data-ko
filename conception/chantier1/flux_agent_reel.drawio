@@ -1,0 +1,55 @@
+<mxfile host="Electron">
+  <diagram name="Flux agent - état réel" id="flux-agent-reel">
+    <mxGraphModel dx="1450" dy="765" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=left;verticalAlign=middle;" value="Chantier 1 — flux réel de l&#39;agent Sorabel (Text-to-SQL), garde-fou inopérant" vertex="1">
+          <mxGeometry height="30" width="720" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Utilisateur" vertex="1">
+          <mxGeometry height="70" width="140" x="30" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Agent LangChain&#xa;(agent/agent.py)" vertex="1">
+          <mxGeometry height="70" width="170" x="160" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Outil run_sql_query&#xa;(agent/tools.py)" vertex="1">
+          <mxGeometry height="70" width="190" x="510" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="generate_sql&#xa;LLM Kimi-K2.6 (Azure)&#xa;(sql/generator.py)" vertex="1">
+          <mxGeometry height="80" width="200" x="505" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="run_query&#xa;(sql/executor.py)" vertex="1">
+          <mxGeometry height="70" width="170" x="940" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="n6" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;boundedLbl=1;" value="PostgreSQL&#xa;(base Sorabel)" vertex="1">
+          <mxGeometry height="80" width="150" x="1100" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="guard" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;dashed=1;fontSize=12;fontStyle=1;" value="ensure_safe — garde-fou SQL&#xa;(sql/guard.py)" vertex="1">
+          <mxGeometry height="70" width="280" x="670" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="note" parent="1" style="text;html=1;align=left;verticalAlign=top;fontSize=11;whiteSpace=wrap;" value="Bugs relevés (chantier 1) :&#xa;• sql/guard.py:56-57 — mot-clé d&#39;écriture détecté mais &quot;pass&quot;, aucune exception levée&#xa;• sql/guard.py:60 — tables référencées jamais comparées à ALLOWED_TABLES&#xa;• sql/executor.py + agent/tools.py — ensure_safe n&#39;est appelé nulle part avant l&#39;exécution" vertex="1">
+          <mxGeometry height="120" width="380" x="640" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=classic;startFill=1;endArrow=classic;endFill=1;fontSize=11;" target="n2" value="question / réponse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n2" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=classic;startFill=1;endArrow=classic;endFill=1;fontSize=11;" target="n3" value="invoque l&#39;outil / résultat texte">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n3" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=classic;startFill=1;endArrow=classic;endFill=1;fontSize=11;" target="n4" value="question / SQL généré">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n3" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=classic;startFill=1;endArrow=classic;endFill=1;fontSize=11;" target="n5" value="SQL généré (non validé) / lignes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="n5" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=classic;startFill=1;endArrow=classic;endFill=1;fontSize=11;" target="n6" value="requête SQL / lignes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="guard" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#b85450;fontColor=#b85450;endArrow=block;endFill=1;fontSize=11;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" target="n3" value="jamais invoqué">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
